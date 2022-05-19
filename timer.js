@@ -3,9 +3,9 @@ const timerStartBtn = document.getElementsByClassName(
   "timerBox_startButton"
 )[0];
 const timerStopBtn = document.getElementsByClassName("timerBox_stopButton")[0];
-const timerResetBtn = document.getElementsByClassName(
-  "timerBox_resetButton"
-)[0];
+const timerResetBtn = document.getElementsByClassName("timerBox_resetButton")[0];
+const timerSndBtn = document.getElementsByClassName("timer_snd")[0];
+
 
 const focusTime = document.getElementsByClassName("focus timer_clock")[0];
 const restTime = document.getElementsByClassName("rest timer_clock")[0];
@@ -44,11 +44,9 @@ function select(e) {
   const userPick = e.target.value;
   if (userPick === startOption25.value) {
     selectOption = "option25";
-    snd = new Audio("./snd/sndFC5.mp3"); // 25분에 맞는 알람사운드 설정
     timerTimeSet(); // 전역변수를 변경했으니 timer를 세팅
   } else {
     selectOption = "option50";
-    snd = new Audio("./snd/sndMA0.mp3"); // 50분에 맞는 알람사운드 설정
     timerTimeSet();
   }
 }
@@ -71,6 +69,7 @@ function timerTimeSet() {
 
 function stopTimer() {
   clearInterval(focusInterval); //타이머 중단
+  clearInterval(restInterval); //타이머 중단
   //중단하면 재시작할 수 있는 start버튼과 초기화 하는 reset버튼이 나오도록 구현
   timerStopBtn.style.display = "none";
   timerResetBtn.style.display = "block";
@@ -88,6 +87,7 @@ function resetTimer() {
   timerStopBtn.style.display = "none";
   timerResetBtn.style.display = "none";
   timerStartBtn.style.display = "block";
+  timerSndBtn.style.display = "block";
 
   //타이머 애니메이션: 리셋버튼클릭시 빨간토마토로 돌아갑니다.
   masking.style.setProperty("-webkit-mask-position-y", `0px`); //webkit
@@ -101,6 +101,7 @@ function focusStart() {
   timerStopBtn.style.display = "block";
   timerResetBtn.style.display = "block";
   timerStartBtn.style.display = "none";
+  timerSndBtn.style.display = "none";
 
   focusTimerStart === focusTimer ? fadeInFunc() : null; //타이머 애니메이션: fadeIn 애니메이션 실행
   focusTimerStart === focusTimer ? moonFadeInFunc() : null;  //나이트모드타이머
@@ -189,31 +190,25 @@ startOption50.addEventListener("click", select);
 
 
 //알람사운드 작성중ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-//알람 사운드는 옵션선택에서 고름
-const sndCheck = document.querySelector('#snd_check');
+// const sndCheck = document.querySelector('#snd_check');
+const sndCheckBtn = document.querySelector('#snd_check_btn');
 const sndtext = document.querySelector('#snd_text');
-const timerSnd= document.querySelector('.timer_snd'); // 디바이스 체크후 div보여주기
-// const checkDevice = navigator.userAgent
-// const showSndDiv = ()=>{
-  // const reg = /CriOS|ios|iPnone|iPad/;
-  // alert(`>>>> ${reg.test(checkDevice)}<<<< - ${checkDevice}`)
-  // return !reg.test(checkDevice)
-// }
-// console.log(showSndDiv())
-// alert(showSndDiv());
-// showSndDiv() ? timerSnd.style.display = "inline-block" : timerSnd.style.display = "none"; 
-
+const timerSnd= document.querySelector('.timer_snd');
 let snd = new Audio("./snd/sndFC5.mp3");
+let isPlay=false;
 
-const sndPlay = () => { 
-  // sndCheck.checked ? snd.play() : null;  
-  snd.play()
-    }
-sndCheck.addEventListener('change',(e)=>{
-  e.target.checked ? sndtext.innerText = "알람 ON" : sndtext.innerText = "알람OFF"
-})
+const sndPlay = () => { isPlay ? snd.play() : null; }
 
-// console.log(checkDevice);
-// alert(navigator.userAgent)
-//아이폰 아이패드는 시간셋을 고른후 시작하면 적용되었음 처음부터 한번 고르게 하면 될것같음.
-//알람사운드 작성중ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ끝
+const sndCheckChange = (e)=>{
+  // sndCheck.checked === false ? sndCheck.checked = true : sndCheck.checked = false;
+  selectOption==='option25' ? snd = new Audio("./snd/sndFC5.mp3") : snd = new Audio("./snd/sndFC10.mp3")
+  if (sndCheckBtn.innerText === '알람off'){
+    sndCheckBtn.innerText = "알람 on";
+    isPlay = true;
+  }else{
+    sndCheckBtn.innerText = "알람off";
+    isPlay = false;
+  }  
+}
+
+sndCheckBtn.addEventListener('click',sndCheckChange)

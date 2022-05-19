@@ -797,16 +797,21 @@ header.night,
 }
 
 /* 알람 체크박스 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-#snd_check {
+/* #snd_check {
   zoom: 2.0;
-}
-#snd_text{
+  margin-right: 0;
+} */
+/* #snd_text{ */
+  /* user-select: none; */
+  /* cursor: pointer;
+} */
+.timer_snd {
+  
   user-select: none;
-}
-.timer_snd{
+  text-align: left ;
   cursor: pointer;
   width: 200px;
-  padding: 10px;
+  padding: 10px 30px ;
   margin: 10px;
   color: #555555;
   font-size: 30px;
@@ -815,4 +820,16 @@ header.night,
   background-color: white;
   border-radius: 1rem;
   box-shadow: 1px 1px 6px #d0d0d0;
+  white-space: nowrap;
+  /* align-items: center; */
+  align-items: j;
+}
+.timer_snd:hover {
+  background-color: #78e3d8;
+  color: #fff;
+}
+@media screen and (max-width: 950px) {
+  .timer_snd {
+    width: 170px;
+  }
 }
